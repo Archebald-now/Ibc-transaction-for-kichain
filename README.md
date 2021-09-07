@@ -121,17 +121,17 @@ based on network settings with different rizon and tki prefixes:
 
 #### We try to generate a channel between the networks with the command:
 
-> rly paths generate groot-011 kichain-t-4 transfer  -- port=transfer
+> rly paths generate groot-011 kichain-t-4 transfer --port=transfer
 
 #If the command does not work, try several times or add the - debug parameter to see the step-by-step actions of the system
 the output should be as follows:
 
-> Generated path(transfer), run 'rly paths show transfer  -- yaml' to see details
+> Generated path(transfer), run 'rly paths show transfer --yaml' to see details
 # You can open and view the generated settings with the above command.
 
  #### Trying to open a channel for relaying:
 
-> rly tx link transfer  --debug
+> rly tx link transfer --debug
 
 #### if it so happens that the channel does not open, then go to the config with the command:
 
@@ -139,9 +139,9 @@ the output should be as follows:
 
 #### erase the lines in the path section on both networks:
 
-client-id: 07-tendermint-16
- connection-id: connection-14
- channel-id: channel-11
+client-id: 07-tendermint-18
+ connection-id: connection-32
+ channel-id: channel-27
 
 #### we re-initialize the light client with the commands:
 
@@ -151,7 +151,7 @@ client-id: 07-tendermint-16
 
 #### run the command to open the channel again
  
-> rly tx link transfer  -- debug
+> rly tx link transfer  --debug
 
 #### and so on until you see the output of the command:
 > I[2021–09–06|09:22:54.913] ★ Channel created: [groot-011]chan{channel-11}port{transfer} -> [kichain-t-4]chan{channel-41}port{transfer}
@@ -170,19 +170,23 @@ client-id: 07-tendermint-16
 
 # command template but not as devilish as it is drawn .. in our case the command will look like this:
 
-> rly tx transfer groot-011 kichain-t-4 1000000uatolo tki1eakzw0qhxcclerm0uwxae88ugcmet2radufqqf  -- path transfer
+> rly tx transfer groot-011 kichain-t-4 10000000uatolo tki1ch4gsk6g90zh5rsleuuy0sj5hv5els7gy7nkct --path transfer
 
 # and the answer will be a conclusion about a successful hash transaction, which can be checked in both rizon and kichain networks in explorer
   
-> I[2021–09–06|09:35:00.471] ✔ [groot-011]@{412926} - msg(0:transfer) hash(D4E8A8C5CA7E6ED0B3FD247C456938E1A160B3E850FB10E27440D25A08C69DAE)
+> I[2021–09–06|09:35:00.471] ✔ [groot-011]@{412926} - msg(0:transfer) hash(5FBCB53EB0D59D6E69B2BF94AB0E51329FC0A75E1A1FE609ED05523586000AD8)
 
-> https://testnet.mintscan.io/rizon/txs/D4E8A8C5CA7E6ED0B3FD247C456938E1A160B3E850FB10E27440D25A08C69DAE
+> https://testnet.mintscan.io/rizon/txs/5FBCB53EB0D59D6E69B2BF94AB0E51329FC0A75E1A1FE609ED05523586000AD8
 
->https://testnet.mintscan.io/rizon/txs/D23F51989A2E65749318A2B13DC6DEA9FA0F267E43529081C16E341CF80A1015
+> https://testnet.mintscan.io/rizon/txs/368B4E4EEB32B54BA1609324FDDC6C4E78911BD9758D9E7D61DD879679A49862
+
 
 #### now we will translate in the other direction, the command looks similar
 
-> rly tx transfer kichain-t-4 groot-011 1000000utki rizon1eakzw0qhxcclerm0uwxae88ugcmet2raquwh9n  -- path transfer
+> rly tx transfer kichain-t-4 groot-011 5000000utki rizon1z9frwrtgthmhx400rq5lud904fvut3wa38kqp7 --path transfer
+>  https://ki.thecodes.dev/tx/6CB143AE93CAE9D12FCC066E317796959352074C92EC2F51BADEFCAF881E6B45
+
+>  https://ki.thecodes.dev/tx/D306F619A076A8364F88C07A0D67D9F7E18545324C882D462447F0F3A8ED3ECC
 
 #### if you have forgotten wallet addresses. this happens sometimes :-) then you can see the command
 
@@ -208,17 +212,17 @@ WantedBy=multi-user.target
 EOF
 
 now make start our service and lets use Relayer remote
+                                                              
 > sudo systemctl daemon-reload
-
 > sudo systemctl enable rlyd
-
-> sudo systemctl start rlyd                                                             
+> sudo systemctl start rlyd    
+   
 # Use thise comand to transfer 
 > kid tx ibc-transfer transfer transfer channel-N rizon_WALLET_address 1000utki --from name_OF_wallet --fees=5000utki --gas=auto --chain-id kichain-t-4 --home $HOME/kichain/kid
 
 #number of chanel you can see in config.yaml on relayer or use command 
    
-   > rly paths show transfer  -- yaml
+> rly paths show transfer  --yaml
    
 Send back to kichain from rizon same comand
    
